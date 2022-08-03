@@ -22,4 +22,4 @@ VALUES ('John', 'Doe', 9, NULL),
 ('Kunal', 'Singh', 13, NULL),
 ('Malia', 'Brown', 14, 37),
 ('Sarah', 'Lourd', 15, NULL),
-('Tom', 'Allen', 16, 39);quit 
+('Tom', 'Allen', 16, 39);
