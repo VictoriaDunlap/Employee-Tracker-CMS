@@ -38,8 +38,9 @@ const initialQuestion = async () => {
       case 'Update Employee Role':
         updateEmloyeeRole()
       break;
-      // case 'View All Roles':
-      // break;
+      case 'View All Roles':
+        viewAllRoles()
+      break;
       // case 'Add Role':
       // break;
       // case 'View All Departments':
@@ -61,63 +62,60 @@ initialQuestion()
 //   })
 // }
 
-const addEmployee = () => {
-  inquirer.prompt([
-    {
-      type: 'input',
-      message: 'What is their first name?',
-      name: 'firstName',
-    },
-    {
-    type: 'input',
-    message: 'What is their last name?',
-    name: 'lastName',
-    },
-    {
-    type: 'list',
-    message: 'What is their role?',
-    choices: ['Sales Lead', 'Salesperson', 'Lead Engineer', 'Software Engineer', 'Account Manager', 'Accountant', 'Legal Team Lead', 'Lawyer'],
-    name: 'employeeRole',
-    },
-    {
-      type: 'input',
-      message: 'Who is their manager?',
-      name: 'employeeManager',
-    },
-  ])
+// const addEmployee = () => {
+//   inquirer.prompt([
+//     {
+//       type: 'input',
+//       message: 'What is their first name?',
+//       name: 'firstName',
+//     },
+//     {
+//     type: 'input',
+//     message: 'What is their last name?',
+//     name: 'lastName',
+//     },
+//     {
+//     type: 'list',
+//     message: 'What is their role?',
+//     choices: ['Sales Lead', 'Salesperson', 'Lead Engineer', 'Software Engineer', 'Account Manager', 'Accountant', 'Legal Team Lead', 'Lawyer'],
+//     name: 'employeeRole',
+//     },
+//     {
+//       type: 'input',
+//       message: 'Who is their manager?',
+//       name: 'employeeManager',
+//     },
+//   ])
   
-  db.query('INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES = ?', function (err, results) {
+//   db.query('INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES = ?', function (err, results) {
+//     console.table(results)
+//   })
+// }
+
+// const updateEmloyeeRole = () => {
+//   // collects employees from the database
+//     const getEmployees = () => {
+//     return new Promise((res, rej) => {
+//       db.query(`SELECT CONCAT(employee.first_name, ' ', employee.last_name) AS Name FROM employee`, (err,res) => {
+//         console.table(res)
+//       })
+//     })
+//   }
+//   const employeesToUpdate = getEmployees()
+//   console.log(employeesToUpdate)
+//   return new Promise((res,rej) => {
+//     inquirer.prompt({
+//       type: 'list',
+//       message: 'Select employee.',
+//       choices: [employeesToUpdate],
+//       name: 'employeesToUpdateQuestion',
+//     })
+//   })
+// }
+
+const viewAllRoles = () => {
+  db.query('SELECT role_types.id, role_types.title, role_types.salary, department.dep_name FROM department INNER JOIN role_types ON role_types.department_id = department.id', function (err, results) {
     console.table(results)
-  })
-}
-
-const updateEmloyeeRole = () => {
-  // collects employees from the database
-  const getEmployees = () => {
-  return new Promise((res, rej) => {
-    db.query(`SELECT CONCAT(employee.first_name, ' ', employee.last_name) AS Name FROM employee`, (err,res) => {
-      console.table(res)
-    })
-  })
-}
-  const employeesToUpdate = getEmployees()
-  console.log(employeesToUpdate)
-  return new Promise((res,rej) => {
-    inquirer.prompt({
-      type: 'list',
-      message: 'Select employee.',
-      choices: [employeesToUpdate],
-      name: 'employeesToUpdateQuestion',
-    })
-  })
-}
-
-// collects employees from the database
-const getEmployees = () => {
-  return new Promise((res, rej) => {
-    db.query(`SELECT CONCAT(employee.first_name, ' ', employee.last_name) AS Name FROM employee`, (err,res) => {
-      console.table(res)
-    })
   })
 }
 
