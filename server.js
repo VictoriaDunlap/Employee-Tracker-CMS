@@ -43,8 +43,9 @@ const initialQuestion = async () => {
       break;
       // case 'Add Role':
       // break;
-      // case 'View All Departments':
-      // break;
+      case 'View All Departments':
+        veiwAllDepartment()
+      break;
       // case 'Add Department':
       // break;
       // case 'Quit':
@@ -113,8 +114,16 @@ initialQuestion()
 //   })
 // }
 
-const viewAllRoles = () => {
-  db.query('SELECT role_types.id, role_types.title, role_types.salary, department.dep_name FROM department INNER JOIN role_types ON role_types.department_id = department.id', function (err, results) {
+// const viewAllRoles = () => {
+//   db.query('SELECT role_types.id, role_types.title, role_types.salary, department.dep_name FROM department INNER JOIN role_types ON role_types.department_id = department.id', function (err, results) {
+//     console.table(results)
+//   })
+// }
+
+// const addRole
+
+const veiwAllDepartment = () => {
+  db.query('SELECT department.id, department.dep_name FROM department', function (err, results) {
     console.table(results)
   })
 }
