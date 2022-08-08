@@ -44,11 +44,13 @@ const initialQuestion = async () => {
       // case 'Add Role':
       // break;
       case 'View All Departments':
-        veiwAllDepartment()
+        viewAllDepartment()
       break;
       // case 'Add Department':
       // break;
-      // case 'Quit':
+      case 'Quit':
+        console.log('Done')
+      break;
     }}
   )
 }
@@ -57,74 +59,81 @@ initialQuestion()
 
 // SELECT employee.manager_id FROM employee WHERE employee.manager_id <> employee.id
 // need to work on te join function 
-// const allEmployees = () => {
-//   db.query('SELECT employee.id, employee.first_name, employee.last_name, role_types.title, role_types.salary, department.dep_name, employee.manager_id FROM department INNER JOIN role_types ON role_types.department_id = department.id INNER JOIN employee ON role_types.id = employee.role_id', function (err, results) {
-//   console.table(results);
-//   })
-// }
+const allEmployees = () => {
+  db.query('SELECT employee.id, employee.first_name, employee.last_name, role_types.title, role_types.salary, department.dep_name, employee.manager_id FROM department INNER JOIN role_types ON role_types.department_id = department.id INNER JOIN employee ON role_types.id = employee.role_id', function (err, results) {
+  console.table(results);
+  initialQuestion()
+  })
+}
 
-// const addEmployee = () => {
-//   inquirer.prompt([
-//     {
-//       type: 'input',
-//       message: 'What is their first name?',
-//       name: 'firstName',
-//     },
-//     {
-//     type: 'input',
-//     message: 'What is their last name?',
-//     name: 'lastName',
-//     },
-//     {
-//     type: 'list',
-//     message: 'What is their role?',
-//     choices: ['Sales Lead', 'Salesperson', 'Lead Engineer', 'Software Engineer', 'Account Manager', 'Accountant', 'Legal Team Lead', 'Lawyer'],
-//     name: 'employeeRole',
-//     },
-//     {
-//       type: 'input',
-//       message: 'Who is their manager?',
-//       name: 'employeeManager',
-//     },
-//   ])
+const addEmployee = () => {
+  inquirer.prompt([
+   {
+      type: 'input',
+      message: 'What is their first name?',
+      name: 'firstName',
+    },
+    {
+    type: 'input',
+    message: 'What is their last name?',
+    name: 'lastName',
+    },
+    {
+    type: 'list',
+    message: 'What is their role?',
+    choices: ['Sales Lead', 'Salesperson', 'Lead Engineer', 'Software Engineer', 'Account Manager', 'Accountant', 'Legal Team Lead', 'Lawyer'],
+    name: 'employeeRole',
+    },
+    {
+      type: 'input',
+      message: 'Who is their manager?',
+      name: 'employeeManager',
+    },
+  ])
   
-//   db.query('INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES = ?', function (err, results) {
-//     console.table(results)
-//   })
+  db.query('INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES = ?', function (err, results) {
+    console.table(results)
+  }).then (() => {
+    initialQuestion()
+  })
+}
+
+const updateEmloyeeRole = () => {
+  // collects employees from the database
+    const getEmployees = () => {
+    return new Promise((res, rej) => {
+      db.query(`SELECT CONCAT(employee.first_name, ' ', employee.last_name) AS Name FROM employee`, (err,res) => {
+        console.table(res)
+      })
+    })
+  }
+  const employeesToUpdate = getEmployees()
+  console.log(employeesToUpdate)
+  return new Promise((res,rej) => {
+    inquirer.prompt({
+      type: 'list',
+      message: 'Select employee.',
+      choices: [employeesToUpdate],
+      name: 'employeesToUpdateQuestion',
+    })
+  })
+}
+
+const viewAllRoles = async () => {
+  db.query('SELECT role_types.id, role_types.title, role_types.salary, department.dep_name FROM department INNER JOIN role_types ON role_types.department_id = department.id', function (err, results) {
+    console.table(results)
+    initialQuestion()
+  })
+}
+
+// const addRole = () => {
+
 // }
 
-// const updateEmloyeeRole = () => {
-//   // collects employees from the database
-//     const getEmployees = () => {
-//     return new Promise((res, rej) => {
-//       db.query(`SELECT CONCAT(employee.first_name, ' ', employee.last_name) AS Name FROM employee`, (err,res) => {
-//         console.table(res)
-//       })
-//     })
-//   }
-//   const employeesToUpdate = getEmployees()
-//   console.log(employeesToUpdate)
-//   return new Promise((res,rej) => {
-//     inquirer.prompt({
-//       type: 'list',
-//       message: 'Select employee.',
-//       choices: [employeesToUpdate],
-//       name: 'employeesToUpdateQuestion',
-//     })
-//   })
-// }
-
-// const viewAllRoles = () => {
-//   db.query('SELECT role_types.id, role_types.title, role_types.salary, department.dep_name FROM department INNER JOIN role_types ON role_types.department_id = department.id', function (err, results) {
-//     console.table(results)
-//   })
-// }
-
-// const addRole
-
-const veiwAllDepartment = () => {
+const viewAllDepartment = () => {
   db.query('SELECT department.id, department.dep_name FROM department', function (err, results) {
     console.table(results)
+    initialQuestion()
   })
 }
 
