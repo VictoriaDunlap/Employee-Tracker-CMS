@@ -85,9 +85,8 @@ const addEmployee = () => {
     name: 'lastName',
     },
     {
-    type: 'list',
-    message: 'What is their role?',
-    choices: ['Sales Lead', 'Salesperson', 'Lead Engineer', 'Software Engineer', 'Account Manager', 'Accountant', 'Legal Team Lead', 'Lawyer'],
+    type: 'inout',
+    message: 'What is their role id?',
     name: 'employeeRole',
     },
     {
@@ -97,11 +96,8 @@ const addEmployee = () => {
     },
   ]).then (({firstName,lastName,employeeRole,employeeManager}) => {
     console.log(firstName,lastName,employeeRole,employeeManager)
-    db.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (${firstName}, ${lastName}, ${employeeRole}, ${employeeManager})`, function (err, results) {
-      console.table(results)
-    // console.log(results)
-    initialQuestion()
-  })
+    db.promise().query(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ('${firstName}', '${lastName}', '${employeeRole}', '${employeeManager}')`).then((results) => {console.log(results)
+      allEmployees()})
 })}
 
 const updateEmloyeeRole = () => {
