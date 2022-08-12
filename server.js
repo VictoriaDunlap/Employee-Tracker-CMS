@@ -91,13 +91,13 @@ const addEmployee = () => {
     },
     {
       type: 'input',
-      message: 'Who is their manager?',
+      message: 'What is the manager id?',
       name: 'employeeManager',
     },
   ]).then (({firstName,lastName,employeeRole,employeeManager}) => {
-    console.log(firstName,lastName,employeeRole,employeeManager)
-    db.promise().query(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ('${firstName}', '${lastName}', '${employeeRole}', '${employeeManager}')`).then((results) => {console.log(results)
-      allEmployees()})
+    db.promise().query(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ('${firstName}', '${lastName}', '${employeeRole}', '${employeeManager}')`)
+    allEmployees()
+    initialQuestion()
 })}
 
 const updateEmloyeeRole = () => {
@@ -105,7 +105,7 @@ const updateEmloyeeRole = () => {
     const getEmployees = () => {
     return new Promise((res, rej) => {
       db.query(`SELECT CONCAT(employee.first_name, ' ', employee.last_name) AS Name FROM employee`, (err,res) => {
-        console.log(res)
+        console.table(res)
       })
     })
   }
@@ -121,8 +121,8 @@ const updateEmloyeeRole = () => {
   })
 }
 
-const viewAllRoles = async () => {
-  db.query('SELECT role_types.id AS Role ID, role_types.title AS Title, role_types.salary AS Salary, department.dep_name AS Department FROM department INNER JOIN role_types ON role_types.department_id = department.id', function (err, results) {
+const viewAllRoles = () => {
+  db.query('SELECT role_types.id AS RoleID, role_types.title AS Title, role_types.salary AS Salary, department.dep_name AS Department FROM role_types LEFT JOIN department ON role_types.department_id = department.id', function (err, results) {
     console.table(results)
     initialQuestion()
   })
@@ -141,22 +141,18 @@ const addRole = () => {
      name: 'roleSalary',
      },
      {
-     type: 'list',
-     message: 'What is the role department?',
-     choices: ['Engineering', 'Finance', 'Legal', 'Sales'],
+     type: 'input',
+     message: 'What is the role department id?',
      name: 'roleDepartment',
      },
- 
    ]).then (({roleTitle,roleSalary,roleDepartment}) => {
-     db.query(`INSERT INTO role_types (title, salary, department_id) VALUES (${roleTitle}, ${roleSalary}, ${roleDepartment})`, function (err, results) {
-       console.table(results)
-     // console.log(results)
-     initialQuestion()
-   })
+    db.promise().query(`INSERT INTO role_types (title, salary, department_id) VALUES ('${roleTitle}', '${roleSalary}', '${roleDepartment}')`)
+    viewAllRoles()
+    initialQuestion()
  })}
 
 const viewAllDepartment = () => {
-  db.query('SELECT department.id AS Department ID, department.dep_name AS Department Name FROM department', function (err, results) {
+  db.query('SELECT * FROM department', function (err, results) {
     console.table(results)
     initialQuestion()
   })
@@ -170,9 +166,8 @@ const addDepartment = () => {
        name: 'departmentTitle',
      },
    ]).then (({departmentTitle}) => {
-     db.query(`INSERT INTO role_types (dep_name) VALUES (${departmentTitle})`, function (err, results) {
-       console.table(results)
-     // console.log(results)
+     db.query(`INSERT INTO department (dep_name) VALUES ('${departmentTitle}')`, function (err, results) {
+     viewAllDepartment()
      initialQuestion()
    })
  })}
