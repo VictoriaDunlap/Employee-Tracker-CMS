@@ -102,23 +102,34 @@ const addEmployee = () => {
 
 const updateEmloyeeRole = () => {
   // collects employees from the database
-    const getEmployees = () => {
-    return new Promise((res, rej) => {
-      db.query(`SELECT CONCAT(employee.first_name, ' ', employee.last_name) AS Name FROM employee`, (err,res) => {
-        console.table(res)
-      })
-    })
-  }
-  const employeesToUpdate = getEmployees()
-  console.log(employeesToUpdate)
-  return new Promise((res,rej) => {
-    inquirer.prompt({
-      type: 'list',
-      message: 'Select employee.',
-      choices: [employeesToUpdate],
-      name: 'employeesToUpdateQuestion',
-    })
-  })
+  //   const getEmployees = () => {
+  //   return new Promise((res, rej) => {
+  //     db.query(`SELECT CONCAT(employee.first_name, ' ', employee.last_name) AS Name FROM employee`, (err,res) => {
+  //       console.log(res)
+  //       const employeesToUpdate = res
+  //       console.log(JSON.stringify(employeesToUpdate[0].text))
+  //       return new Promise((res,rej) => {
+  //         inquirer.prompt({
+  //           type: 'list',
+  //           message: 'Select employee.',
+  //           choices: [employeesToUpdate[0]],
+  //           name: 'employeesToUpdateQuestion',
+  //         })
+  //       })
+  //     })
+  //   })
+  // }
+  // getEmployees()
+  // const employeesToUpdate = getEmployees()
+  // // console.log(employeesToUpdate)
+  // return new Promise((res,rej) => {
+  //   inquirer.prompt({
+  //     type: 'list',
+  //     message: 'Select employee.',
+  //     choices: [employeesToUpdate],
+  //     name: 'employeesToUpdateQuestion',
+  //   })
+  // })
 }
 
 const viewAllRoles = () => {
